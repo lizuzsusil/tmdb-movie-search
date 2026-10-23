@@ -1,7 +1,9 @@
 import Image from "next/image";
+import Link from "next/link";
 import { tv } from "tailwind-variants";
 
-import type { Movie } from "~/types/movie";
+import { Rating } from "~/components/Rating";
+import type { MovieCardProps } from "~/types/cards";
 
 const card = tv({
   slots: {
@@ -15,23 +17,20 @@ const card = tv({
 
 const { base, posterWrapper, body, title, meta } = card();
 
-export interface MovieCardProps {
-  movie: Movie;
-}
-
-export function MovieCard({ movie }: MovieCardProps) {
+export function MovieCard({ movie, href }: MovieCardProps) {
   const year = movie.releaseDate ? movie.releaseDate.slice(0, 4) : null;
 
-  return (
+  const card = (
     <article className={base()}>
       <div className={posterWrapper()}>
         {movie.posterPath ? (
           <Image
             src={`https://image.tmdb.org/t/p/w342${movie.posterPath}`}
-            alt={movie.title}
+            alt={`Poster for ${movie.title}.`}
             fill
-            sizes="(min-width: 1024px) 200px, 45vw"
+            sizes="(min-width: 1280px) 180px, (min-width: 1024px) 200px, (min-width: 768px) 25vw, (min-width: 640px) 30vw, 45vw"
             className="object-cover"
+            loading="lazy"
           />
         ) : (
           <div className="flex h-full items-center justify-center text-xs text-muted">
@@ -43,11 +42,25 @@ export function MovieCard({ movie }: MovieCardProps) {
         <h3 className={title()}>{movie.title}</h3>
         <div className={meta()}>
           {year && <span>{year}</span>}
-          <span aria-label={`Rated ${movie.voteAverage.toFixed(1)} out of 10`}>
-            ★ {movie.voteAverage.toFixed(1)}
-          </span>
+          <Rating value={movie.voteAverage} />
         </div>
       </div>
     </article>
+  );
+
+  const resolvedHref = href === undefined ? `/movies/${movie.id}` : href;
+
+  if (resolvedHref === null) {
+    return card;
+  }
+
+  return (
+    <Link
+      href={resolvedHref}
+      aria-label={`${movie.title} — view details`}
+      className="block rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-500"
+    >
+      {card}
+    </Link>
   );
 }
