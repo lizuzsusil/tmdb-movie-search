@@ -4,17 +4,13 @@
   --color-background: #0b0d12;
   --color-surface: #14171f;
   --color-surface-hover: #1c202b;
-  --color-border: #262b38;
+  --color-border: #5b6675;
 
   --color-foreground: #f4f5f7;
   --color-muted: #9aa1b1;
 
-  --color-brand-100: #dbeafe;
-  --color-brand-400: #60a5fa;
-  --color-brand-500: #3b82f6;
+  --color-brand-500: #2f6ff0;
   --color-brand-600: #2563eb;
-
-  --color-accent-400: #fbbf24;
 
   --font-sans:
     ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -25,5 +21,48 @@
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
+  }
+}
+
+:root[data-theme="light"] {
+  --color-background: #ffffff;
+  --color-surface: #f1f4f9;
+  --color-surface-hover: #e4e9f2;
+  --color-border: #75819a;
+  --color-foreground: #101828;
+  --color-muted: #4d5a6e;
+  --color-brand-500: #1d4ed8;
+  --color-brand-600: #1d4ed8;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    --color-border: #8b98ad;
+    --color-muted: #b9c2d1;
+  }
+  :root[data-theme="light"] {
+    --color-border: #5b6b84;
+    --color-muted: #3c475a;
+  }
+}
+
+@media (forced-colors: active) {
+  .border-border {
+    border-color: ButtonBorder;
+  }
+  :focus-visible {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
   }
 }
